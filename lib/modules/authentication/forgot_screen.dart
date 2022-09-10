@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodbari_deliver_app/modules/authentication/controller/customer_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../router_name.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/k_images.dart';
 import '../../../widgets/custom_image.dart';

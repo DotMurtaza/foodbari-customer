@@ -118,7 +118,8 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () {
                       // Navigator.of(context)
                       //     .pushReplacementNamed(RouteNames.signInScreen);
-                      Get.offAll(() => const AuthenticationScreen());
+                      controller.signOut();
+                      // Get.offAll(() => const AuthenticationScreen());
                     },
                     minLeadingWidth: 0,
                     contentPadding: EdgeInsets.zero,

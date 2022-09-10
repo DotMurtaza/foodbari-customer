@@ -51,7 +51,7 @@ class MyBottomNavigationBar extends StatelessWidget {
                 _BottomNavigationItem(
                   selectedIndex: _selectedIndex == 2,
                   icon: Kimages.orderIcon,
-                  text: 'Order',
+                  text: 'Cart',
                   index: 2,
                   onTap: (int index) {
                     _controller.naveListener.sink.add(index);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodbari_deliver_app/modules/authentication/controller/customer_controller.dart';
+import 'package:foodbari_deliver_app/modules/order/home_screen.dart';
 import 'package:get/get.dart';
 
 import '../message/chat_list_screen.dart';
-import '../order/order_screen.dart';
 import '../order_history/order_history_screen.dart';
 import '../profile/profile_screen.dart';
 import 'component/bottom_navigation_bar.dart';
@@ -20,7 +20,7 @@ class _MainPageState extends State<MainPage> {
   final _homeController = MainController();
 
   late List<Widget> pageList;
-  var customerController = Get.find<CustomerController>();
+  var customerController = Get.put(CustomerController());
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _MainPageState extends State<MainPage> {
     Get.put(CustomerController()).getProfileData();
 
     pageList = [
-      const OrderScreen(),
+      const HomeScreen(),
       const ChatListScreen(),
       const OrderHistoryScreen(),
       ProfileScreen(),

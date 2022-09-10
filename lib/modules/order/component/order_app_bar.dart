@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodbari_deliver_app/modules/authentication/controller/customer_controller.dart';
+import 'package:foodbari_deliver_app/modules/order/product_controller/product_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:badges/badges.dart';
@@ -9,11 +10,19 @@ import '../../../../utils/constants.dart';
 import '../../../../utils/k_images.dart';
 import '../../../../widgets/custom_image.dart';
 
-class OrderAppBar extends StatelessWidget {
+class OrderAppBar extends StatefulWidget {
   final double height;
 
   OrderAppBar({Key? key, this.height = 140}) : super(key: key);
+
+  @override
+  State<OrderAppBar> createState() => _OrderAppBarState();
+}
+
+class _OrderAppBarState extends State<OrderAppBar> {
   var authController = Get.put(CustomerController());
+  TextEditingController searchController = TextEditingController();
+  ProductController controller = Get.put(ProductController());
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
@@ -23,7 +32,7 @@ class OrderAppBar extends StatelessWidget {
         color: Colors.white,
         child: Stack(
           children: [
-            SizedBox(height: height, width: media.size.width),
+            SizedBox(height: widget.height, width: media.size.width),
             const Positioned(
               left: -21,
               top: -74,
@@ -72,6 +81,12 @@ class OrderAppBar extends StatelessWidget {
                               ],
                             ),
                             child: TextFormField(
+                              controller: controller.seaechController,
+                              onChanged: (val) {
+                                controller.searchProduct.value = val;
+                                setState(() {});
+                                //return null;
+                              },
                               decoration: inputDecorationTheme.copyWith(
                                 prefixIcon: const Icon(Icons.search_rounded,
                                     color: grayColor, size: 26),

@@ -5,10 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:foodbari_deliver_app/modules/authentication/authentication_screen.dart';
 import 'package:foodbari_deliver_app/modules/authentication/models/customer_model.dart';
-import 'package:foodbari_deliver_app/modules/authentication/widgets/sign_in_form.dart';
 import 'package:foodbari_deliver_app/modules/main_page/main_page.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:location/location.dart';
 
@@ -22,6 +20,17 @@ class CustomerController extends GetxController {
   RxDouble customerLong = 0.0.obs;
   RxString customerAddress = "".obs;
   RxString customerPlaceName = "".obs;
+
+// <<<<<<<<===============For Auto signin  =================>>>>>>>>
+  final Rxn<User> _firebaseUser = Rxn<User>();
+  User? get user => _firebaseUser.value;
+  final firebaseAuth = FirebaseAuth.instance;
+
+  @override
+  void onInit() {
+    _firebaseUser.bindStream(firebaseAuth.authStateChanges());
+    super.onInit();
+  }
 
   // <<<<<<<<===============create account function =================>>>>>>>>
   void signUpCustomer({
@@ -74,6 +83,7 @@ class CustomerController extends GetxController {
   // <<<<<<<<===============Get profile data function =================>>>>>>>>
 
   Future<void> getProfileData() async {
+    // ignore: unused_local_variable
     var userData = firebaseFirestore
         .collection('Customer')
         .doc(auth.currentUser!.uid)
@@ -145,6 +155,7 @@ class CustomerController extends GetxController {
     return shopAddress;
   }
 
+// <<<<<<<<===============For location update data function =================>>>>>>>>
   Future<void> updateLocation() async {
     try {
       await firebaseFirestore
@@ -158,5 +169,12 @@ class CustomerController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
+  }
+
+// <<<<<<<<===============Signout app function =================>>>>>>>>
+  Future<void> signOut() async {
+    await auth
+        .signOut()
+        .then((value) => {Get.offAll(() => const AuthenticationScreen())});
   }
 }

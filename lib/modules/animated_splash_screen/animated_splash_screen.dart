@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../router_name.dart';
+import 'package:foodbari_deliver_app/root.dart';
+import 'package:get/get.dart';
 import '../../utils/constants.dart';
 import '../../utils/k_images.dart';
 import '../../widgets/custom_image.dart';
@@ -23,7 +24,8 @@ class _SplashScreenState extends State<AnimatedSplashScreen>
   }
 
   void navigationPage() {
-    Navigator.of(context).pushReplacementNamed(RouteNames.signInScreen);
+    Get.offAll(() => RootCustomer());
+    // Navigator.of(context).pushReplacementNamed(RouteNames.signInScreen);
   }
 
   @override
