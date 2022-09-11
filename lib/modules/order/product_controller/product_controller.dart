@@ -33,4 +33,40 @@ class ProductController extends GetxController {
       return retVal;
     });
   }
+
+  //creating subcollection for pass to add to cart screen
+  Future<void> addToCart(String productId, MyProductModel product) async {
+    await firstore
+        .collection("Customer")
+        .doc(auth.currentUser!.uid)
+        .collection("add_to_cart")
+        .doc(productId)
+        .set({
+      'is_purchase': product.isPurchase,
+      'product_id': product.productId,
+      'product_image': product.productImage,
+      'product_name': product.productName,
+      'product_price': product.productPrice,
+    }).then((value) {
+      firstore.collection("products").doc(productId).update({
+        "is_purchase": true,
+      });
+    });
+  }
+
+  //Removing item from cart
+  Future<void> removeFromCart(String productId, MyProductModel product) async {
+    await firstore
+        .collection("Customer")
+        .doc(auth.currentUser!.uid)
+        .collection("add_to_cart")
+        .doc(productId)
+        .delete()
+        .then((value) {
+      firstore.collection("products").doc(productId).update({
+        "is_purchase": false,
+      });
+      Get.snackbar("Deleted", "Your item is successfully removed");
+    });
+  }
 }

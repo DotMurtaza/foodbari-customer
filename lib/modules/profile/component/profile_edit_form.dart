@@ -48,11 +48,11 @@ class ProfielEditForm extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             TextFormField(
+              enabled: false,
               controller: locationController,
               keyboardType: TextInputType.visiblePassword,
-              decoration: const InputDecoration(
-                hintText: 'Location',
-              ),
+              decoration: InputDecoration(
+                  hintText: controller.customerModel.value!.address.toString()),
             ),
             const SizedBox(height: 20),
             PrimaryButton(

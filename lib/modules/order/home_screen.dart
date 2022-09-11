@@ -247,19 +247,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                               const SizedBox(width: 16),
-                                              Flexible(
-                                                child: PrimaryButton(
-                                                  minimumSize: const Size(
-                                                      double.infinity, 40),
-                                                  fontSize: 16,
-                                                  grediantColor: const [
-                                                    redColor,
-                                                    redColor
-                                                  ],
-                                                  text: 'Buy',
-                                                  onPressed: () {},
-                                                ),
-                                              ),
+                                              products.isPurchase == false
+                                                  ? Flexible(
+                                                      child: PrimaryButton(
+                                                        minimumSize: const Size(
+                                                            double.infinity,
+                                                            40),
+                                                        fontSize: 16,
+                                                        grediantColor: const [
+                                                          redColor,
+                                                          redColor
+                                                        ],
+                                                        text: 'Buy',
+                                                        onPressed: () {
+                                                          productController
+                                                              .addToCart(
+                                                            products.productId!,
+                                                            products,
+                                                          );
+                                                          Get.snackbar(
+                                                              'Success',
+                                                              'Your item ${products.productName} is successfully added');
+                                                          print(
+                                                              "Id is here  : ${products.productId}");
+                                                        },
+                                                      ),
+                                                    )
+                                                  : GestureDetector(
+                                                      onTap: () {
+                                                        productController
+                                                            .removeFromCart(
+                                                          products.productId!,
+                                                          products,
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8),
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.red,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12)),
+                                                        child: Column(
+                                                          children: const [
+                                                            Text(
+                                                              'Remove Item',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                            Icon(
+                                                              Icons.delete,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 17,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
                                             ],
                                           )
                                         ],
@@ -295,28 +344,12 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Expanded(
             child: Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildLocation(),
-                const Spacer(),
-                FlutterSwitch(
-                  width: 100.0,
-                  height: 37.0,
-                  valueFontSize: 18.0,
-                  toggleSize: 27.0,
-                  value: false,
-                  borderRadius: 30.0,
-                  padding: 4.0,
-                  activeColor: redColor,
-                  inactiveColor: redColor,
-                  activeTextColor: Colors.white,
-                  inactiveTextColor: Colors.white,
-                  activeText: 'Online',
-                  inactiveText: 'Offline',
-                  showOnOff: true,
-                  onToggle: (val) {},
-                ),
+                // const Spacer(),
+
                 const SizedBox(width: 10),
                 InkWell(
                   onTap: () {
@@ -343,6 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildLocation() {
     return GestureDetector(
       onTap: () async {
+        print('object');
         await authController.getCurrentLocation().then((value) async {
           await authController.updateLocation();
         });
@@ -354,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.white,
           ),
           const SizedBox(width: 5),
-          authController.customerModel.value == null
+          authController.customerAddress.value.isEmpty
               ? Obx(
                   () => authController.customerModel.value!.address == null &&
                           authController.customerModel.value!.address == ""

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodbari_deliver_app/modules/order/home_screen.dart';
+import 'package:foodbari_deliver_app/modules/order_history/order_history_screen.dart';
 import 'modules/animated_splash_screen/animated_splash_screen.dart';
 import 'modules/authentication/authentication_screen.dart';
 import 'modules/authentication/forgot_screen.dart';
@@ -73,8 +74,7 @@ class RouteNames {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case RouteNames.orderDetailsPage:
         final productList = settings.arguments as List<ProductModel>;
-        return MaterialPageRoute(
-            builder: (_) => OrderDetailsPage(productList: productList));
+        return MaterialPageRoute(builder: (_) => OrderHistoryScreen());
       case RouteNames.orderTrackingScreen:
         return MaterialPageRoute(builder: (_) => const OrderTrackingScreen());
 

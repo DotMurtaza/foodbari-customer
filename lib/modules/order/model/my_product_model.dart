@@ -5,14 +5,13 @@ class MyProductModel {
   String? productImage;
   String? productName;
   double? productPrice;
-  int? productQTY;
+
   bool? isPurchase;
   MyProductModel({
     this.productId,
     this.productImage,
     this.productName,
     this.productPrice,
-    this.productQTY,
     this.isPurchase,
   });
   MyProductModel.fromSnapshot(DocumentSnapshot data) {
@@ -21,6 +20,5 @@ class MyProductModel {
     productId = data['product_id'] ?? '';
     productImage = data['product_image'] ?? '';
     productName = data['product_name'] ?? '';
-    productQTY = data['product_qty'] ?? 1;
   }
 }

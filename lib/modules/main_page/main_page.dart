@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodbari_deliver_app/modules/authentication/controller/customer_controller.dart';
 import 'package:foodbari_deliver_app/modules/order/home_screen.dart';
+import 'package:foodbari_deliver_app/modules/order/order_details_page.dart';
 import 'package:get/get.dart';
 
 import '../message/chat_list_screen.dart';
@@ -34,7 +35,7 @@ class _MainPageState extends State<MainPage> {
     pageList = [
       const HomeScreen(),
       const ChatListScreen(),
-      const OrderHistoryScreen(),
+      OrderDetailsPage(),
       ProfileScreen(),
     ];
   }

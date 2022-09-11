@@ -1,4 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbari_deliver_app/modules/order/order_tracking_screen.dart';
+import 'package:foodbari_deliver_app/modules/order/product_controller/add_to_cart_controller.dart';
+import 'package:foodbari_deliver_app/modules/order/product_controller/product_controller.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slidable_button/slidable_button.dart';
 import '../../../utils/constants.dart';
@@ -16,6 +22,7 @@ class PannelCollapsComponent extends StatefulWidget {
 
 class _PannelCollapsComponentState extends State<PannelCollapsComponent> {
   bool isFinished = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,7 +44,9 @@ class _PannelCollapsComponentState extends State<PannelCollapsComponent> {
             width: 60,
           ),
           const SizedBox(height: 12),
-          const _BottomWidget(),
+          _BottomWidget(
+            price1: '0.0',
+          ),
         ],
       ),
     );
@@ -45,78 +54,102 @@ class _PannelCollapsComponentState extends State<PannelCollapsComponent> {
 }
 
 class _BottomWidget extends StatelessWidget {
-  const _BottomWidget({
+  _BottomWidget({
     Key? key,
+    required this.price1,
   }) : super(key: key);
-
+  final String price1;
+  AddToCartController addToCartController = Get.put(AddToCartController());
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Total Price:',
-              style: TextStyle(
-                  fontSize: 18, height: 1.16, fontWeight: FontWeight.w600),
+    double getTotal() =>
+        addToCartController.productList.value!.fold(0, (total, item) {
+          double price = item.productPrice!;
+          // ignore: unnecessary_null_comparison
+          if (price != null) {
+            return total + price;
+          } else {
+            return total;
+          }
+        });
+
+    return Obx(() => Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total Price:',
+                  style: TextStyle(
+                      fontSize: 18, height: 1.16, fontWeight: FontWeight.w600),
+                ),
+                addToCartController.productList.value!.isEmpty
+                    ?
+                    //   Icon(CupertinoIcons.down_arrow),
+                    Text(
+                        '0.0',
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      )
+                    : Text(
+                        '${getTotal() + 50}',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            height: 1.16,
+                            fontWeight: FontWeight.w600),
+                      )
+              ],
             ),
-            Text(
-              '\$18.00',
-              style: TextStyle(
-                  fontSize: 18, height: 1.16, fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        IgnorePointer(
-          ignoring: false,
-          child: SlidableButton(
-            height: 52,
-            width: MediaQuery.of(context).size.width,
-            buttonWidth: 50.0,
-            borderRadius: BorderRadius.circular(4),
-            color: Colors.white,
-            buttonColor: redColor,
-            dismissible: false,
-            border: Border.all(color: borderColor),
-            label: const Center(
-                child: Icon(Icons.double_arrow_sharp, color: Colors.white)),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Swipe to Confirm Delivery',
-                    style: GoogleFonts.roboto(
-                        color: redColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
+            const SizedBox(height: 16),
+            IgnorePointer(
+              ignoring: false,
+              child: SlidableButton(
+                height: 52,
+                width: MediaQuery.of(context).size.width,
+                buttonWidth: 50.0,
+                borderRadius: BorderRadius.circular(4),
+                color: Colors.white,
+                buttonColor: redColor,
+                dismissible: false,
+                border: Border.all(color: borderColor),
+                label: const Center(
+                    child: Icon(Icons.double_arrow_sharp, color: Colors.white)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Swipe to Confirm Delivery',
+                        style: GoogleFonts.roboto(
+                            color: redColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                ],
+                ),
+                disabledColor: Colors.grey,
+                initialPosition: SlidableButtonPosition.left,
+                onChanged: (position) {
+                  // print(position);
+                  // setState(() {
+                  if (position == SlidableButtonPosition.right) {
+                    Get.to(() => const OrderTrackingScreen());
+                    // result = 'Button is on the right';
+                  } else {
+                    // result = 'Button is on the left';
+                  }
+                  // });
+                },
               ),
             ),
-            disabledColor: Colors.grey,
-            initialPosition: SlidableButtonPosition.left,
-            onChanged: (position) {
-              // print(position);
-              // setState(() {
-              if (position == SlidableButtonPosition.right) {
-                // result = 'Button is on the right';
-              } else {
-                // result = 'Button is on the left';
-              }
-              // });
-            },
-          ),
-        ),
-      ],
-    );
+          ],
+        ));
   }
 }
 
-class PanelComponent extends StatelessWidget {
+class PanelComponent extends StatefulWidget {
   const PanelComponent({
     Key? key,
     this.controller,
@@ -125,9 +158,14 @@ class PanelComponent extends StatelessWidget {
   final ScrollController? controller;
 
   @override
+  State<PanelComponent> createState() => _PanelComponentState();
+}
+
+class _PanelComponentState extends State<PanelComponent> {
+  @override
   Widget build(BuildContext context) {
     return ListView(
-      controller: controller,
+      controller: widget.controller,
       padding: const EdgeInsets.only(top: 16, bottom: 14, left: 20, right: 20),
       children: [
         Center(
@@ -147,67 +185,68 @@ class PanelComponent extends StatelessWidget {
               fontSize: 20, height: 1.15, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Subtotal',
-              style: TextStyle(fontSize: 16, height: 1.62),
-            ),
-            Text(
-              '\$912.00',
-              style: TextStyle(fontSize: 16, height: 1.62),
-            ),
-          ],
-        ),
-        const SizedBox(height: 9),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Discount',
-              style: TextStyle(fontSize: 16, color: redColor),
-            ),
-            Text(
-              '\$912.00',
-              style: TextStyle(fontSize: 16, color: redColor),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Container(height: 1, color: borderColor),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Coupon Discount',
-              style: TextStyle(fontSize: 16, color: redColor, height: 1.62),
-            ),
-            Text(
-              '\$912.00',
-              style: TextStyle(fontSize: 16, color: redColor, height: 1.62),
-            ),
-          ],
-        ),
-        const SizedBox(height: 9),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Delivery Fee',
-              style: TextStyle(fontSize: 16, color: greenColor),
-            ),
-            Text(
-              '\$912.00',
-              style: TextStyle(fontSize: 16, color: greenColor),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Container(height: 1, color: borderColor),
-        const SizedBox(height: 16),
-        const _BottomWidget(),
+        SizedBox(
+          child: GetX<AddToCartController>(
+              init: Get.put<AddToCartController>(AddToCartController()),
+              builder: (AddToCartController controller) {
+                double getTotal() =>
+                    controller.productList.value!.fold(0, (total, item) {
+                      double price = item.productPrice!;
+                      // ignore: unnecessary_null_comparison
+                      if (price != null) {
+                        return total + price;
+                      } else {
+                        return total;
+                      }
+                    });
+                if (controller.productList.value == null) {
+                  return Text('No item found please add to cart first',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: Colors.black));
+                } else {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Subtotal',
+                            style: TextStyle(fontSize: 16, height: 1.62),
+                          ),
+                          Text(
+                            "\$ " + getTotal().toString(),
+                            style: const TextStyle(fontSize: 16, height: 1.62),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 9),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            'Delivery Fee',
+                            style: TextStyle(fontSize: 16, color: greenColor),
+                          ),
+                          Text(
+                            '\$50.00',
+                            style: TextStyle(fontSize: 16, color: greenColor),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Container(height: 1, color: borderColor),
+                      const SizedBox(height: 16),
+                      _BottomWidget(
+                          price1: controller.productList.value == null
+                              ? "0.0"
+                              : "${getTotal() + 50}"),
+                    ],
+                  );
+                }
+              }),
+        )
       ],
     );
   }

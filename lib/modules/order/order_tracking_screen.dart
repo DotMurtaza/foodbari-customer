@@ -64,7 +64,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
     const double height = 90;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: RoundedAppBar(titleText: 'Oder Tracking'),
+      appBar: RoundedAppBar(titleText: 'Oder Tracking', isLeading: true),
       body: SlidingUpPanel(
         controller: panelController,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),

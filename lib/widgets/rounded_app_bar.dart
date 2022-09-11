@@ -9,7 +9,7 @@ class RoundedAppBar extends AppBar {
   final Color bgColor;
   final Color textColor;
   final void Function()? onTap;
-
+  bool isLeading;
   final ShapeBorder shapeBorder;
 
   final bool isBorder;
@@ -18,7 +18,8 @@ class RoundedAppBar extends AppBar {
   final List<Widget>? actionButtons;
 
   RoundedAppBar({
-    this.isBorder = false,
+    this.isLeading = false,
+    this.isBorder = true,
     this.borderRadius = 15,
     this.titleText,
     this.textColor = Colors.white,
@@ -34,8 +35,9 @@ class RoundedAppBar extends AppBar {
           titleSpacing: 0,
           backgroundColor: bgColor,
           shape: shapeBorder,
-          leading:
-              AppbarLeading(isBorder: isBorder, borderRadius: borderRadius),
+          leading: isLeading
+              ? AppbarLeading(isBorder: isBorder, borderRadius: borderRadius)
+              : SizedBox(),
           iconTheme: const IconThemeData(color: Colors.white),
           titleTextStyle: TextStyle(
               color: textColor, fontSize: 18, fontWeight: FontWeight.w600),

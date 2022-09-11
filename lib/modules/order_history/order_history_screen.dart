@@ -17,7 +17,8 @@ class OrderHistoryScreen extends StatelessWidget {
           SliverAppBar(
             collapsedHeight: appBarHeight,
             expandedHeight: appBarHeight,
-            systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: redColor),
+            systemOverlayStyle:
+                const SystemUiOverlayStyle(statusBarColor: redColor),
             flexibleSpace: OrderAppBar(height: appBarHeight),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 10)),

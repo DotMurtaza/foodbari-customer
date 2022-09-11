@@ -150,8 +150,8 @@ class CustomerController extends GetxController {
     List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
         _locationData.latitude!, _locationData.longitude!);
     var shopAddress = placemarks.first;
-    customerAddress.value = shopAddress.street!;
-    customerPlaceName.value = shopAddress.name!;
+    customerAddress.value = shopAddress.subLocality!;
+    customerPlaceName.value = shopAddress.locality!;
     return shopAddress;
   }
 
