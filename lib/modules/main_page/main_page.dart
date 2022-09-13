@@ -34,7 +34,7 @@ class _MainPageState extends State<MainPage> {
 
     pageList = [
       const HomeScreen(),
-      const ChatListScreen(),
+      // const ChatListScreen(),
       OrderDetailsPage(),
       ProfileScreen(),
     ];

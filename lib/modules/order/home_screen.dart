@@ -247,68 +247,66 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                               const SizedBox(width: 16),
-                                              products.isPurchase == false
-                                                  ? Flexible(
-                                                      child: PrimaryButton(
-                                                        minimumSize: const Size(
-                                                            double.infinity,
-                                                            40),
-                                                        fontSize: 16,
-                                                        grediantColor: const [
-                                                          redColor,
-                                                          redColor
-                                                        ],
-                                                        text: 'Buy',
-                                                        onPressed: () {
-                                                          productController
-                                                              .addToCart(
-                                                            products.productId!,
-                                                            products,
-                                                          );
-                                                          Get.snackbar(
-                                                              'Success',
-                                                              'Your item ${products.productName} is successfully added');
-                                                          print(
-                                                              "Id is here  : ${products.productId}");
-                                                        },
-                                                      ),
-                                                    )
-                                                  : GestureDetector(
-                                                      onTap: () {
-                                                        productController
-                                                            .removeFromCart(
-                                                          products.productId!,
-                                                          products,
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8),
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.red,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12)),
-                                                        child: Column(
-                                                          children: const [
-                                                            Text(
-                                                              'Remove Item',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                            Icon(
-                                                              Icons.delete,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 17,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
+                                              // products.isPurchase == false
+                                              //     ?
+                                              Flexible(
+                                                child: PrimaryButton(
+                                                  minimumSize: const Size(
+                                                      double.infinity, 40),
+                                                  fontSize: 16,
+                                                  grediantColor: const [
+                                                    redColor,
+                                                    redColor
+                                                  ],
+                                                  text: 'Buy',
+                                                  onPressed: () {
+                                                    productController.addToCart(
+                                                      products.productId!,
+                                                      products,
+                                                    );
+                                                    Get.snackbar('Success',
+                                                        'Your item ${products.productName} is successfully added');
+                                                    print(
+                                                        "Id is here  : ${products.productId}");
+                                                  },
+                                                ),
+                                              )
+                                              // : GestureDetector(
+                                              //     onTap: () {
+                                              // productController
+                                              //     .removeFromCart(
+                                              //   products.productId!,
+                                              //   products,
+                                              // );
+                                              //     },
+                                              //     child: Container(
+                                              //       padding:
+                                              //           const EdgeInsets
+                                              //               .all(8),
+                                              //       decoration: BoxDecoration(
+                                              //           color: Colors.red,
+                                              //           borderRadius:
+                                              //               BorderRadius
+                                              //                   .circular(
+                                              //                       12)),
+                                              //       child: Column(
+                                              //         children: const [
+                                              //           Text(
+                                              //             'Remove Item',
+                                              //             style: TextStyle(
+                                              //                 color: Colors
+                                              //                     .white),
+                                              //           ),
+                                              //           Icon(
+                                              //             Icons.delete,
+                                              //             color:
+                                              //                 Colors.white,
+                                              //             size: 17,
+                                              //           ),
+                                              //         ],
+                                              //       ),
+                                              //     ),
+                                              //   ),
                                             ],
                                           )
                                         ],

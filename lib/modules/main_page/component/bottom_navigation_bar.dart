@@ -39,10 +39,19 @@ class MyBottomNavigationBar extends StatelessWidget {
                     _controller.naveListener.sink.add(index);
                   },
                 ),
+                // _BottomNavigationItem(
+                //   selectedIndex: _selectedIndex == 1,
+                //   icon: Kimages.inboxIcon,
+                //   text: 'Inbox',
+                //   index: 1,
+                //   onTap: (int index) {
+                //     _controller.naveListener.sink.add(index);
+                //   },
+                // ),
                 _BottomNavigationItem(
                   selectedIndex: _selectedIndex == 1,
-                  icon: Kimages.inboxIcon,
-                  text: 'Inbox',
+                  icon: Kimages.orderIcon,
+                  text: 'Cart',
                   index: 1,
                   onTap: (int index) {
                     _controller.naveListener.sink.add(index);
@@ -50,18 +59,9 @@ class MyBottomNavigationBar extends StatelessWidget {
                 ),
                 _BottomNavigationItem(
                   selectedIndex: _selectedIndex == 2,
-                  icon: Kimages.orderIcon,
-                  text: 'Cart',
-                  index: 2,
-                  onTap: (int index) {
-                    _controller.naveListener.sink.add(index);
-                  },
-                ),
-                _BottomNavigationItem(
-                  selectedIndex: _selectedIndex == 3,
                   icon: Kimages.profileIcon,
                   text: 'Profile',
-                  index: 3,
+                  index: 2,
                   onTap: (int index) {
                     _controller.naveListener.sink.add(index);
                   },

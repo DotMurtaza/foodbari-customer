@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbari_deliver_app/modules/order/model/my_product_model.dart';
 import 'package:foodbari_deliver_app/modules/order/product_controller/add_to_cart_controller.dart';
+import 'package:foodbari_deliver_app/modules/order/product_controller/product_controller.dart';
+import 'package:foodbari_deliver_app/widgets/primary_button.dart';
 import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../../router_name.dart';
@@ -33,6 +37,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     super.initState();
   }
 
+  ProductController productController = Get.put(ProductController());
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width - 40;
@@ -62,7 +67,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         controller: panelController,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         // panel: const PanelComponent(),
-        panelBuilder: (sc) => PanelComponent(controller: sc),
+        panelBuilder: (sc) => PanelComponent(
+          controller: sc,
+        ),
         minHeight: height,
         maxHeight: 350,
         backdropEnabled: true,
@@ -89,6 +96,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                       return ListView.builder(
                         itemCount: controller.product!.length,
                         itemBuilder: (context, index) {
+                          //   productModelData = controller.product![index];
+
                           return Padding(
                             padding: const EdgeInsets.only(
                               top: 8,
@@ -98,6 +107,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                             child: Column(
                               children: [
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       decoration: const BoxDecoration(
@@ -140,6 +151,19 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                         ),
                                       ],
                                     ),
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: () {
+                                        productController.removeFromCart(
+                                          controller.product![index].productId!,
+                                          controller.product![index],
+                                        );
+                                      },
+                                      child: const Icon(
+                                        CupertinoIcons.delete,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
                                   ],
                                 ),
                               ],

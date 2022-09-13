@@ -17,9 +17,9 @@ class RootCustomer extends StatelessWidget {
       },
       builder: (_) {
         if (Get.find<CustomerController>().user != null) {
-          return MainPage();
+          return const MainPage();
         } else {
-          return AuthenticationScreen();
+          return const AuthenticationScreen();
         }
       },
     );

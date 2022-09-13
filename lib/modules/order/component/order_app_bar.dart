@@ -197,8 +197,7 @@ class _OrderAppBarState extends State<OrderAppBar> {
           const SizedBox(width: 5),
           authController.customerModel.value == null
               ? Obx(
-                  () => authController.customerModel.value!.address == null &&
-                          authController.customerModel.value!.address == ""
+                  () => authController.customerAddress == null
                       ? Text(
                           'Get Location',
                           style: GoogleFonts.roboto(

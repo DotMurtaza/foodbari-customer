@@ -1,5 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:foodbari_deliver_app/modules/authentication/controller/customer_controller.dart';
+import 'package:foodbari_deliver_app/modules/order/model/rider_data_model.dart';
+import 'package:foodbari_deliver_app/modules/order/place_order_screen.dart';
+import 'package:foodbari_deliver_app/modules/order/product_controller/add_to_cart_controller.dart';
+import 'package:foodbari_deliver_app/modules/order/product_controller/rider_data_controller.dart';
+import 'package:foodbari_deliver_app/utils/utils.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -7,6 +14,7 @@ import '../../utils/constants.dart';
 import '../../utils/k_images.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/rounded_app_bar.dart';
+import 'dart:math' show cos, sqrt, asin;
 
 class OrderTrackingScreen extends StatefulWidget {
   const OrderTrackingScreen({Key? key}) : super(key: key);
@@ -17,7 +25,9 @@ class OrderTrackingScreen extends StatefulWidget {
 
 class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   final Completer<GoogleMapController> _controller = Completer();
-
+  RiderDataController riderDataController = Get.put(RiderDataController());
+  CustomerController customerController = Get.put(CustomerController());
+  AddToCartController addToCartController = Get.put(AddToCartController());
   final _initPos = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
@@ -26,6 +36,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
 
   @override
   void initState() {
+    Get.put(RiderDataController());
     marker = Marker(
       onDrag: (latLng) {
         addMarker(latLng);
@@ -87,24 +98,213 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
     return Column(
       children: [
         Expanded(
-          child: GoogleMap(
-            mapType: MapType.hybrid,
-            onLongPress: addMarker,
-            // myLocationButtonEnabled: true,
-            compassEnabled: true,
-            zoomControlsEnabled: false,
+          child: GetX(
+              init: Get.put<RiderDataController>(RiderDataController()),
+              builder: (RiderDataController controller) {
+                if (controller != null && controller.rider != null) {
+                  return ListView.builder(
+                      itemCount: controller.rider!.length,
+                      itemBuilder: (context, index) {
+                        RiderDataModel riderData = controller.rider![index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            padding: EdgeInsets.all(12),
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: borderColor),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //_buildProductHeader(),
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     // Column(
+                                //     //   crossAxisAlignment:
+                                //     //       CrossAxisAlignment.start,
+                                //     //   children: const [
+                                //     //     Text(
+                                //     //       'Order Date',
+                                //     //       style: TextStyle(
+                                //     //           height: 1, color: redColor),
+                                //     //     ),
 
-            myLocationEnabled: true,
-            initialCameraPosition: _initPos,
-            markers: {marker},
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-          ),
+                                //     //     SizedBox(height: 8),
+                                //     //     // InVoiceWidget(text: orderStatus.invoice),
+                                //     //   ],
+                                //     // ),
+                                //     // Column(
+                                //     //   crossAxisAlignment:
+                                //     //       CrossAxisAlignment.end,
+                                //     //   children: [
+                                //     //     Text(
+                                //     //       Utils.formatDate(
+                                //     //           orderStatus.time!.toDate()),
+                                //     //       style: const TextStyle(
+                                //     //           height: 1, color: paragraphColor),
+                                //     //     ),
+                                //     //     const SizedBox(height: 1),
+                                //     //   ],
+                                //     // )
+                                //   ],
+                                // ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          riderData.rider_name!.toUpperCase(),
+                                          style: const TextStyle(
+                                              height: 1, color: paragraphColor),
+                                        ),
+                                        Text(
+                                          riderData.rider_phone.toString(),
+                                          style: GoogleFonts.roboto(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              height: 1,
+                                              color: redColor),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: const [
+                                        CircleAvatar(
+                                            radius: 25,
+                                            backgroundImage: AssetImage(
+                                                "assets/images/profile.jpg")),
+
+                                        SizedBox(height: 1),
+                                        // Text(
+                                        //   orderStatus.time.toString(),
+                                        //   style:
+                                        //   GoogleFonts.roboto(fontSize: 16, fontWeight: FontWeight.bold),
+                                        // )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Customer Address',
+                                      style:
+                                          TextStyle(height: 1, color: redColor),
+                                    ),
+                                    Text(
+                                      riderData.rider_address!,
+                                      style: const TextStyle(
+                                          height: 1,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Rider Current Distance',
+                                      style:
+                                          TextStyle(height: 1, color: redColor),
+                                    ),
+                                    // Text(customerController.riderLocationCity),
+                                    Text(
+                                      "${double.parse(
+                                        calculateDistance(
+                                          riderData.rider_location!.latitude,
+                                          riderData.rider_location!.longitude,
+                                          customerController.customerLat.value,
+                                          customerController.customerLong.value,
+                                        ).toString(),
+                                      ).toStringAsFixed(2)} KM",
+                                      style: const TextStyle(
+                                          height: 1,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 14),
+                                PrimaryButton(
+                                  minimumSize: const Size(double.infinity, 40),
+                                  fontSize: 16,
+                                  grediantColor: const [blackColor, blackColor],
+                                  text: 'View Details',
+                                  onPressed: () async {
+                                    riderDataController
+                                        .getPlaceOrderDetail(riderData.id);
+                                    Get.to(() => PlaceOrderScreen());
+                                    // orderController
+                                    //     .getCustomerProduct(orderStatus.id!);
+                                    //Get.log("lenght is here  : ${orderController.customerProducts!.length}");
+                                    // Navigator.pushNamed(context, RouteNames.orderDetailsPage,
+                                    //     arguments: );
+                                    // Get.to(() => OrderDetailsPage(
+                                    //       customerModel: orderStatus,
+                                    //     ));
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                } else {
+                  return const Center(
+                    child: Text("No order to show yet"),
+                  );
+                }
+              }),
+          // child: GoogleMap(
+          //   mapType: MapType.hybrid,
+          //   onLongPress: addMarker,
+          //   // myLocationButtonEnabled: true,
+          //   compassEnabled: true,
+          //   zoomControlsEnabled: false,
+
+          //   myLocationEnabled: true,
+          //   initialCameraPosition: _initPos,
+          //   markers: {marker},
+          //   onMapCreated: (GoogleMapController controller) {
+          //     _controller.complete(controller);
+          //   },
+          // ),
         ),
         const SizedBox(height: 80),
       ],
     );
+  }
+
+  calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbari_deliver_app/modules/authentication/controller/customer_controller.dart';
+import 'package:foodbari_deliver_app/modules/order/model/my_product_model.dart';
 import 'package:foodbari_deliver_app/modules/order/order_tracking_screen.dart';
 import 'package:foodbari_deliver_app/modules/order/product_controller/add_to_cart_controller.dart';
 import 'package:foodbari_deliver_app/modules/order/product_controller/product_controller.dart';
@@ -44,9 +46,10 @@ class _PannelCollapsComponentState extends State<PannelCollapsComponent> {
             width: 60,
           ),
           const SizedBox(height: 12),
-          _BottomWidget(
-            price1: '0.0',
-          ),
+          // _BottomWidget(
+          //   price1: '0.0',
+          //   productModeldata: ,
+          // ),
         ],
       ),
     );
@@ -135,7 +138,14 @@ class _BottomWidget extends StatelessWidget {
                   // print(position);
                   // setState(() {
                   if (position == SlidableButtonPosition.right) {
-                    Get.to(() => const OrderTrackingScreen());
+                    addToCartController
+                        .sendRequestToAllRiders(
+                      Get.put(CustomerController()).customerModel.value!,
+                    )
+                        .then((value) {
+                      Get.to(() => OrderTrackingScreen());
+                    });
+                    // Get.to(() => const OrderTrackingScreen());
                     // result = 'Button is on the right';
                   } else {
                     // result = 'Button is on the left';
@@ -150,13 +160,12 @@ class _BottomWidget extends StatelessWidget {
 }
 
 class PanelComponent extends StatefulWidget {
-  const PanelComponent({
+  PanelComponent({
     Key? key,
     this.controller,
   }) : super(key: key);
 
   final ScrollController? controller;
-
   @override
   State<PanelComponent> createState() => _PanelComponentState();
 }
@@ -239,9 +248,10 @@ class _PanelComponentState extends State<PanelComponent> {
                       Container(height: 1, color: borderColor),
                       const SizedBox(height: 16),
                       _BottomWidget(
-                          price1: controller.productList.value == null
-                              ? "0.0"
-                              : "${getTotal() + 50}"),
+                        price1: controller.productList.value == null
+                            ? "0.0"
+                            : "${getTotal() + 50}",
+                      ),
                     ],
                   );
                 }

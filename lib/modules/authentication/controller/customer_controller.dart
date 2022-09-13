@@ -20,6 +20,7 @@ class CustomerController extends GetxController {
   RxDouble customerLong = 0.0.obs;
   RxString customerAddress = "".obs;
   RxString customerPlaceName = "".obs;
+  var riderLocationCity;
 
 // <<<<<<<<===============For Auto signin  =================>>>>>>>>
   final Rxn<User> _firebaseUser = Rxn<User>();
@@ -43,7 +44,8 @@ class CustomerController extends GetxController {
       'email': email,
       'location': const GeoPoint(0.0, 0.0),
       'profileImage': "",
-      "address": ""
+      "address": "",
+      "phone": ""
     };
     await auth
         .createUserWithEmailAndPassword(
@@ -150,6 +152,7 @@ class CustomerController extends GetxController {
     List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
         _locationData.latitude!, _locationData.longitude!);
     var shopAddress = placemarks.first;
+
     customerAddress.value = shopAddress.subLocality!;
     customerPlaceName.value = shopAddress.locality!;
     return shopAddress;

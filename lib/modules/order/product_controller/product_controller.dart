@@ -17,6 +17,7 @@ class ProductController extends GetxController {
     super.onInit();
   }
 
+// <<<<<<<<===============getting all product stream from firebase function =================>>>>>>>>
   Stream<List<MyProductModel>> allProductStream() {
     print("enter in all product stream funtion");
     return firstore
@@ -33,9 +34,11 @@ class ProductController extends GetxController {
       return retVal;
     });
   }
+// <<<<<<<<===============creating subcollection for pass to add to cart screen =================>>>>>>>>
 
-  //creating subcollection for pass to add to cart screen
   Future<void> addToCart(String productId, MyProductModel product) async {
+    print('Add Id is:${product.productId}');
+    print('Product is:$productId');
     await firstore
         .collection("Customer")
         .doc(auth.currentUser!.uid)
@@ -47,15 +50,18 @@ class ProductController extends GetxController {
       'product_image': product.productImage,
       'product_name': product.productName,
       'product_price': product.productPrice,
+      'status': product.status,
+      'rider_id': product.riderId,
     }).then((value) {
       firstore.collection("products").doc(productId).update({
         "is_purchase": true,
       });
     });
   }
+// <<<<<<<<=============== Removing item from cart =================>>>>>>>>
 
-  //Removing item from cart
   Future<void> removeFromCart(String productId, MyProductModel product) async {
+    print("product id is: ${product.productId}");
     await firstore
         .collection("Customer")
         .doc(auth.currentUser!.uid)
