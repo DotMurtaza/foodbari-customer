@@ -59,9 +59,9 @@ class ProfielEditForm extends StatelessWidget {
                 text: 'Update Account',
                 onPressed: () {
                   controller.updateProfile(
-                    name: nameController.text,
-                    phone: phoneController.text,
-                  );
+                      name: nameController.text,
+                      phone: phoneController.text,
+                      context: context);
                 })
           ],
         ),

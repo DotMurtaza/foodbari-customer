@@ -74,7 +74,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
               PrimaryButton(
                 text: 'Send Code',
                 onPressed: () {
-                  controller.forgotPassword(emailController.text);
+                  controller.forgotPassword(emailController.text, context);
                   // Navigator.pushReplacementNamed(
                   //     context, RouteNames.verificationCodeScreen);
                 },

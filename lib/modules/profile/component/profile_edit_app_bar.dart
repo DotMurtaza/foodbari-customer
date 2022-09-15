@@ -160,8 +160,7 @@ class _ProfileEditAppBarState extends State<ProfileEditAppBar> {
                                   width: 150,
                                 ),
                               )
-                            : controller.customerModel.value!.profileImage !=
-                                    null
+                            : controller.customerModel.value!.profileImage != ""
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
                                     child: Image.network(
@@ -172,16 +171,12 @@ class _ProfileEditAppBarState extends State<ProfileEditAppBar> {
                                       fit: BoxFit.cover,
                                     ),
                                   )
-                                : CircleAvatar(
+                                : const CircleAvatar(
                                     radius: 70,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      child: Image.network(
-                                        "https://picsum.photos/200/300",
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                    backgroundImage: NetworkImage(
+                                        "https://cdn.techjuice.pk/wp-content/uploads/2015/02/wallpaper-for-facebook-profile-photo-1024x645.jpg"),
                                   ),
+
                         // ClipRRect(
                         //   borderRadius: BorderRadius.circular(100),
                         //   child: controller.customerImage != null

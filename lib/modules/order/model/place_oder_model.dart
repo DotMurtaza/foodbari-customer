@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PlaceOrderModel {
   String? id;
-  String? is_purchase;
+  bool? is_purchase;
   String? product_image;
   String? product_id;
   String? product_name;
-  String? product_price;
+  double? product_price;
   PlaceOrderModel({
     this.id,
     this.is_purchase,
@@ -18,10 +18,10 @@ class PlaceOrderModel {
   PlaceOrderModel.fromSnapshot(DocumentSnapshot data) {
     print("is_purchase is:$product_id");
     id = data.id;
-    is_purchase = data['is_purchased'] ?? '';
+    is_purchase = data['is_purchased'] ?? false;
     product_image = data['prduct_image'] ?? '';
     product_id = data['product_id'] ?? '';
     product_name = data['product_name'] ?? '';
-    product_price = data['product_price'] ?? '';
+    product_price = data['product_price'] ?? 0.0;
   }
 }

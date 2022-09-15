@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbari_deliver_app/utils/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -32,6 +33,31 @@ class Utils {
     } catch (e) {
       return '';
     }
+  }
+
+  static Future showLoadingDialog(BuildContext context, {String? text}) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+            child: Row(
+              children: [
+                const CircularProgressIndicator(color: redColor),
+                const SizedBox(
+                  width: 40,
+                ),
+                Text(text!)
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   static void showSnackBar(BuildContext context, String message) {

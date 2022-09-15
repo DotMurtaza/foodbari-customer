@@ -169,9 +169,20 @@ class ProfileAppBar extends StatelessWidget {
                       child: CircleAvatar(
                         radius: 24,
                         backgroundColor: Colors.transparent,
-                        backgroundImage: NetworkImage(
-                            controller.customerModel.value!.profileImage!),
+                        backgroundImage: controller
+                                    .customerModel.value!.profileImage !=
+                                ""
+                            ? NetworkImage(
+                                controller.customerModel.value!.profileImage!)
+                            : const NetworkImage(
+                                "https://cdn.techjuice.pk/wp-content/uploads/2015/02/wallpaper-for-facebook-profile-photo-1024x645.jpg"),
                       ),
+                      // CircleAvatar(
+                      //   radius: 24,
+                      //   backgroundColor: Colors.transparent,
+                      //   backgroundImage: NetworkImage(
+                      //       controller.customerModel.value!.profileImage!),
+                      // ),
                     ),
                   ],
                 ),

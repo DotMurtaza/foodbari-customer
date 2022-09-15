@@ -119,7 +119,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 authController.signUpCustomer(
                     name: nameController.text,
                     email: emailController.text,
-                    password: passwordController.text);
+                    password: passwordController.text,
+                    context: context);
               }),
           const SizedBox(height: 16),
           const Text(
